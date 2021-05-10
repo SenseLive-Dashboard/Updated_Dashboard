@@ -1,0 +1,11 @@
+nav{
+    background-color: mediumseagreen;
+}
+.nav-item, h5{
+    margin:auto 0px;
+    padding-right:5px;
+}
+
+.nav-link{
+color: white;
+}

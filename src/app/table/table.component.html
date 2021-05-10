@@ -1,0 +1,110 @@
+<div class="btn-group float-left" role="group" aria-label="Basic example">
+  <button class="btn btn-secondary" (click)="live()">Live</button>
+  <button class="btn btn-secondary" (click)="minute()">M
+    <span class="tooltiptext">1 minute</span>
+  </button>
+  <button class="btn btn-secondary" (click)="hour()">H
+    <span class="tooltiptext">1 hour</span>
+  </button>
+  <button class="btn btn-secondary" (click)="day()">D
+    <span class="tooltiptext">1 day</span>
+  </button>
+  <button class="btn btn-secondary" (click)="week()">W
+    <span class="tooltiptext">1 week</span>
+  </button>
+  <button class="btn btn-secondary" (click)="month()">Month
+    <span class="tooltiptext">1 month</span>
+  </button>
+  <button class="btn btn-secondary" (click)="datepicker=!datepicker">Custom
+    <span class="tooltiptext">daterange</span>
+  </button>
+  <div class="btn-group" dropdown>
+    <button id="button-basic" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle"
+      aria-controls="dropdown-basic">
+      Column Filter <span class="caret"></span>
+    </button>
+    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide()" /> Value</a>
+      </li><br>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide1()" /> Phase1</a>
+      </li><br>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide2()" /> Phase2</a>
+      </li><br>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide3()" /> Phase3</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+
+<input *ngIf="datepicker" type="text" placeholder="SELECT DATE" class="form-control" id="daterange" bsDaterangepicker
+  (ngModelChange)="getByDate($event)" [(ngModel)]="this.filters.time_stamp">
+<!--button for download-->
+<button class="btn btn-secondary float-right" (click)="exportexcel()">
+  <fa-icon [icon]="faDownload"></fa-icon>
+</button>
+
+<div class="table-responsive">
+  <table class="table" id="excel-table">
+    <tr>
+      <th scope="col">Time Stamp</th>
+      <th scope="col">Company &nbsp;
+        <fa-icon [icon]="faFilter" (click)="show1=!show1"></fa-icon>
+        <fa-icon [icon]="faSort" (click)="sort1('company')"></fa-icon>
+        <input *ngIf="show1" class="form-control" type="text" name="company" [(ngModel)]="company"
+          (ngModelChange)="Search1()" list="c1">
+        <datalist id="c1">
+          <option *ngFor="let mydata of data1" [value]="mydata.company">
+
+        </datalist>
+      </th>
+      <th scope="col">Meter Name &nbsp;
+        <fa-icon [icon]="faFilter" (click)="show2=!show2"></fa-icon>
+        <fa-icon [icon]="faSort" (click)="sort2('meter_name')"></fa-icon>
+        <input *ngIf="show2" class="form-control" type="text" name="meter_name" [(ngModel)]="meter_name"
+          (ngModelChange)="Search2()" list="c2">
+        <datalist id="c2">
+          <option *ngFor="let mydata of data2" [value]="mydata.meter_name">
+        </datalist>
+      </th>
+      <th scope="col">Meter Id &nbsp;
+        <fa-icon [icon]="faSort" (click)="sort3('meter_id')"></fa-icon>
+      </th>
+      <th scope="col">Data Type &nbsp;
+        <fa-icon [icon]="faFilter" (click)="show3=!show3"></fa-icon>
+        <fa-icon [icon]="faSort" (click)="sort4('data_type')"></fa-icon>
+        <input *ngIf="show3" class="form-control" type="text" name="data_type" [(ngModel)]="data_type"
+          (ngModelChange)="Search3()" list="c3">
+        <datalist id="c3">
+          <option *ngFor="let mydata of data3" [value]="mydata.data_type">
+        </datalist>
+      </th>
+      <th *ngIf="check" scope="col">Value</th>
+      <th *ngIf="check1" scope="col">Phase 1</th>
+      <th *ngIf="check2" scope="col">Phase 2</th>
+      <th *ngIf="check3" scope="col">Phase 3</th>
+    </tr>
+    <tbody>
+      <!--search sort and pagination html-->
+      <tr *ngFor="let mydata of data | orderBy:key:reverse | paginate: {itemsPerPage:20,currentPage:p};">
+        <td width="20%">{{mydata.time_stamp}}</td>
+        <td width="20%">{{mydata.company}}</td>
+        <td width="18%">{{mydata.meter_name}}</td>
+        <td width="12%">{{mydata.meter_id}}</td>
+        <td width="15%">{{mydata.data_type}}</td>
+        <td *ngIf="check" width="10%">{{mydata.val}}</td>
+        <td *ngIf="check1" width="10%">{{mydata.phase1}}</td>
+        <td *ngIf="check2" width="10%">{{mydata.phase2}}</td>
+        <td *ngIf="check3" width="10%">{{mydata.phase3}}</td>
+      </tr>
+    </tbody>
+    <!--pagination code-->
+
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </table>
+
+
+
+</div>

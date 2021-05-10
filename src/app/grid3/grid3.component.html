@@ -1,0 +1,38 @@
+<accordion class="panels" [isAnimated]="true">
+    <accordion-group *ngFor="let mydata of data" heading="Power Factor" [panelClass]="customClass">
+        <div class="btn">{{"Average - "+mydata.val}}</div>
+        <div class="btn">{{"Phase 1 - "+mydata.phase1}}</div>
+        <div class="btn">{{"Phase 2 - "+mydata.phase2}}</div>
+        <div class="btn">{{"Phase 3 - "+mydata.phase3}}</div>
+    </accordion-group>
+    <accordion-group *ngFor="let mydata of data1" heading="Current" [panelClass]="customClass">
+        <div class="btn">{{"Average - "+mydata.val}}</div>
+        <div class="btn">{{"Phase 1 - "+mydata.phase1}}</div>
+        <div class="btn">{{"Phase 2 - "+mydata.phase2}}</div>
+        <div class="btn">{{"Phase 3 - "+mydata.phase3}}</div>
+    </accordion-group>
+    <accordion-group *ngFor="let mydata of data2" heading="Voltage" [panelClass]="customClass">
+        <div class="btn">{{"Average - "+mydata.val}}</div>
+        <div class="btn">{{"Phase 1 - "+mydata.phase1}}</div>
+        <div class="btn">{{"Phase 2 - "+mydata.phase2}}</div>
+        <div class="btn">{{"Phase 3 - "+mydata.phase3}}</div>
+    </accordion-group>
+    <accordion-group *ngFor="let mydata of data3" heading="Active Power" [panelClass]="customClass">
+        <div class="btn">{{"Average - "+mydata.val}}</div>
+        <div class="btn">{{"Phase 1 - "+mydata.phase1}}</div>
+        <div class="btn">{{"Phase 2 - "+mydata.phase2}}</div>
+        <div class="btn">{{"Phase 3 - "+mydata.phase3}}</div>
+    </accordion-group>
+    <accordion-group *ngFor="let mydata of data4" heading="Reactive Power" [panelClass]="customClass">
+        <div class="btn">{{"Average - "+mydata.val}}</div>
+        <div class="btn">{{"Phase 1 - "+mydata.phase1}}</div>
+        <div class="btn">{{"Phase 2 - "+mydata.phase2}}</div>
+        <div class="btn">{{"Phase 3 - "+mydata.phase3}}</div>
+    </accordion-group>
+    <accordion-group *ngFor="let mydata of data5" heading="Apparent Power" [panelClass]="customClass">
+        <div class="btn">{{"Average - "+mydata.val}}</div>
+        <div class="btn">{{"Phase 1 - "+mydata.phase1}}</div>
+        <div class="btn">{{"Phase 2 - "+mydata.phase2}}</div>
+        <div class="btn">{{"Phase 3 - "+mydata.phase3}}</div>
+    </accordion-group>
+</accordion>

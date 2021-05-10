@@ -1,0 +1,26 @@
+#metercard{
+    padding: 10px 0px;
+}
+#metercard1{
+    padding: 0px;
+}
+.card{
+    margin: 0px -5px;
+    height:200px;
+    padding-top: 10px;
+}
+.icon{
+    float: right;
+    margin-right: 2px;
+    margin-top: -10px;
+ 
+}
+.card-title{
+    float: center;
+}
+
+
+  
+
+
+
