@@ -3,6 +3,7 @@ import { NameService } from '../name.service';
 import {Company} from '../company';
 import {FormControl,FormGroup,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-registration-form',
   templateUrl: './registration-form.component.html',
@@ -28,15 +29,21 @@ export class RegistrationFormComponent implements OnInit {
   constructor(private nameService: NameService,private router: Router) { }
 
   ngOnInit(): void {}
+
+ 
   //send form details to backend and move to otp component
   registerCompany(){
     console.warn(this.registerForm.value);
-    this.router.navigateByUrl('otp');
-      this.nameService.registerCompany(this.registerForm.value).subscribe((company: Company)=>{
-        console.log("Company registered", company);
-        this.invalidRegistration = true;
+      this.nameService.registerCompany(this.registerForm.value).subscribe(result=>{
+        if(!result.error){
+
+        
+        this.router.navigateByUrl('otp');
+
+        this.invalidRegistration = true;}
       });
     }
+    get f() { return this.registerForm.controls }
     //send otp on mail not in use at this position
     sendOTP(){
       this.nameService.sendOTP(this.registerForm.value.Email).subscribe((Email: Company)=>{

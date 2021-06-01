@@ -69,7 +69,19 @@
             <input type="password" class="form-control" id="ConfirmPassword" formControlName="ConfirmPassword" required>
             <div class="error" *ngIf="registerForm.controls['ConfirmPassword'].hasError('required')
               && registerForm.controls['ConfirmPassword'].touched">* Please enter confirm password</div>
+              <div class="error" *ngIf="registerForm.errors?.passwordmatch && registerForm.controls['ConfirmPassword'].touched">* Password and confirm password must be match.</div>
           </div>
+
+          <!-- <div class="form-group" class="form">
+            <label for="ConfirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="ConfirmPassword" formControlName="ConfirmPassword" required>
+            <div class="error" *ngIf="registerForm.controls['ConfirmPassword'].hasError('required')
+              && registerForm.controls['ConfirmPassword'].touched">* Please enter confirm password</div>
+              <div class="error" *ngIf="registerForm.controls['ConfirmPassword'].hasError('validator()')
+              && registerForm.controls['ConfirmPassword'].touched">* password doesn't match</div>
+          
+            </div> -->
+
           <div class="form-group">
             <button class="btn btn-primary" type="submit" (click)="sendOTP()" (click)="registerCompany()"
               [disabled]="registerForm.invalid">

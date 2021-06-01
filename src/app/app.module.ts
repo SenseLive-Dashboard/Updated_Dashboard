@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -44,6 +46,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HeaderComponent } from './header/header.component';
 import { DialogboxComponent } from './dialogbox/dialogbox.component';
+import { MessageComponent } from './message/message.component';
 
 
 @NgModule({
@@ -66,9 +69,11 @@ import { DialogboxComponent } from './dialogbox/dialogbox.component';
     ForgotPasswordComponent,
     HeaderComponent,
     DialogboxComponent,
+    MessageComponent,
 
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

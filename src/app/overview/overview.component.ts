@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CardService } from '../card.service';
 import { Emp } from '../table';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faPlusCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import * as $ from 'jquery';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Sensor } from '../sensorData';
+import { Parameter } from '../parameter';
+import { DialogboxService } from '../dialogbox.service';
+
 declare const CanvasJS: any;
 
 
@@ -544,17 +549,51 @@ function apparentPowerGraph() {
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
-
-  data: Emp[] = [];
-  data1: Emp[] = [];
-  data2: Emp[] = [];
-  data3: Emp[] = [];
-  data4: Emp[] = [];
-  data5: Emp[] = [];
+  [x: string]: any;
+  showModal: boolean|any;
+  addCardForm: FormGroup|any;
+  submitted = false;
+  faTimes = faTimes;
+  // data: Emp[] = [];
+  // data1: Emp[] = [];
+  // data2: Emp[] = [];
+  // data3: Emp[] = [];
+  // data4: Emp[] = [];
+  // data5: Emp[] = [];
+  data: Sensor[] = [];
+  data1: Sensor[] = [];
+  data2: Sensor[] = [];
+  data3: Sensor[] = [];
+  data4: Sensor[] = [];
+  data5: Sensor[] = [];
+  kwh: Sensor[] = [];
+  kvarh: Sensor[] = [];
+  kvah: Sensor[] = [];
+  //Parameter: Emp[] = [];
+  
+  cardData: Parameter[]=[];
+  
+ 
+ 
   faChartLine = faChartLine;
+  faPlusCircle = faPlusCircle;
+  show()
+  {
+   
+    this.showModal = true; // Show-Hide Modal Check
+    
+  }
+  //Bootstrap Modal Close event
+  hide()
+  {
+    
+    this.showModal = false;
+    this.addCardForm.reset();
+    
 
+  }
 
-  constructor(private cardService: CardService) {
+  constructor(private formBuilder: FormBuilder,private cardService: CardService, private dialogboxService:DialogboxService) {
     this.cardService.get_current_data().subscribe((response) => {
 
       this.data = response;
@@ -580,14 +619,80 @@ export class OverviewComponent implements OnInit {
       this.data5 = response;
       return this.data5;
     });
+    this.cardService.get_kwh_data().subscribe((response) => {
+      this.kwh = response;
+      return this.kwh;
+    });
+    this.cardService.get_kvarh_data().subscribe((response) => {
+      this.kvarh = response;
+      return this.kvarh;
+    });
+    this.cardService.get_kvah_data().subscribe((response) => {
+      this.kvah = response;
+      return this.kvah;
+    });
+
+   
   }
   ngOnInit(): void {
-
+    this.addCardForm = this.formBuilder.group({
+     data_type:['',Validators.required],
+      unit: ['', Validators.required]
+  });
+  this.cardService.add_card().subscribe((result)=>{
+  this.cardData=result;
+    console.log("Meter Card Data:",this.cardData);
+    return this.cardData;
+  },
+    (error) => {console.log(error)
+  });
+  
 
   }
-  week() {
+  get f() { return this.addCardForm.controls; }
+ 
+onSubmit() {
+  this.submitted = true;
 
-  }
+   // stop here if form is invalid
+   if (this.addCardForm.invalid) {
+    return;
+}
+if(this.submitted){
+
+   //console.log(this.addCardForm.value.data_type);
+  this.cardService.add_parameter(this.addCardForm.value).subscribe((parameterdata: Parameter)=>{
+  
+    console.log(parameterdata);
+    
+
+  },
+    (error) => {console.log(error)
+  });
+  this.showModal=false;
+  this.cardService.update_parameter(this.addCardForm.value).subscribe((result:Parameter)=>{
+    
+    console.log(result);
+    this.ngOnInit();
+  });
+}
+this.ngOnInit();
+  this.addCardForm.reset();
+  this.submitted=false;
+}
+deleteCard(id:number) {
+  
+  this.dialogboxService.confirmThis("Are you sure to delete?",  () => {  
+    this.cardService.deleteCard(id).subscribe((cardDetails: Parameter)=>{
+      console.log("Card Deleted ", cardDetails);
+      this.ngOnInit();
+    }); 
+  }, function () {  
+    console.log("Cancel Card Deletion") 
+  })  
+}  
+
+ 
   graph_c() {
     currentGraph();
   }

@@ -71,4 +71,5 @@ export class UserService {
     return this.httpClient.get<Emp[]>(common.endpoint+'/table_filter/data_type');
 
   }
+ 
 }

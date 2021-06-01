@@ -1,4 +1,5 @@
 export interface Company {
+    [x: string]: any;
     TempID: number,
     CompanyName: string,
     Name: string,

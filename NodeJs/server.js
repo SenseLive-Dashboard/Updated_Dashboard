@@ -6,6 +6,11 @@ const metercard= require("./metercard");
 const table= require("./table");
 const table_sort= require("./table_sort");
 const table_filter= require("./table_filter");
+const company_registration= require("./company_registration");
+
+cors = require("cors");
+app.use(cors());
+
 bodyParser = require("body-parser");
 
 port = 3080;
@@ -17,6 +22,7 @@ app.use("/metercard",metercard);
 app.use("/table",table);
 app.use("/table_sort",table_sort);
 app.use("/table_filter",table_filter);
+app.use("/company_registration",company_registration);
 app.use(bodyParser.json());
 
 

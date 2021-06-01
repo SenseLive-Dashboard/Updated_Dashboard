@@ -6,7 +6,7 @@ router.use(cors());
 
 router.get("/current_avg", (req, res) => {
     
-    const sql = "SELECT val FROM employee1 where data_type='Current' ORDER BY time_stamp DESC LIMIT 1"
+    const sql = "SELECT Current_Avg FROM sensordata ORDER BY reading_time DESC LIMIT 1"
     connection.query(sql, function(err, result, fields) {
       if (err) throw err;
       res.json(result);
@@ -14,7 +14,7 @@ router.get("/current_avg", (req, res) => {
     });
   });
   router.get("/voltage_avg", (req, res) => {
-    const sql = "SELECT val FROM employee1 where data_type='Voltage' ORDER BY time_stamp DESC LIMIT 1"
+    const sql = "SELECT Voltage_Avg FROM sensordata ORDER BY reading_time DESC LIMIT 1"
     connection.query(sql, function(err, result, fields) {
       if (err) throw err;
       res.json(result);
@@ -22,7 +22,7 @@ router.get("/current_avg", (req, res) => {
     });
   });
   router.get("/power_avg", (req, res) => {
-    const sql = "SELECT val FROM employee1 where data_type='Power' ORDER BY time_stamp DESC LIMIT 1"
+    const sql = "SELECT Power_Factor FROM sensordata ORDER BY reading_time DESC LIMIT 1"
     connection.query(sql, function(err, result, fields) {
       if (err) throw err;
       res.json(result);
@@ -30,7 +30,7 @@ router.get("/current_avg", (req, res) => {
     });
   });
   router.get("/active_power_avg", (req, res) => {
-    const sql = "SELECT val FROM employee1 where data_type='Active Power' ORDER BY time_stamp DESC LIMIT 1"
+    const sql = "SELECT Active_Power FROM sensordata ORDER BY reading_time DESC LIMIT 1"
     connection.query(sql, function(err, result, fields) {
       if (err) throw err;
       res.json(result);
@@ -38,7 +38,7 @@ router.get("/current_avg", (req, res) => {
     });
   });
   router.get("/reactive_power_avg", (req, res) => {
-    const sql = "SELECT val FROM employee1 where data_type='Reactive Power' ORDER BY time_stamp DESC LIMIT 1"
+    const sql = "SELECT Reactive_Power FROM sensordata ORDER BY reading_time DESC LIMIT 1"
     connection.query(sql, function(err, result, fields) {
       if (err) throw err;
       res.json(result);
@@ -46,12 +46,36 @@ router.get("/current_avg", (req, res) => {
     });
   });
   router.get("/apparent_power_avg", (req, res) => {
-    const sql = "SELECT val FROM employee1 where data_type='Apparent Power' ORDER BY time_stamp DESC LIMIT 1"
+    const sql = "SELECT Apparent_Power FROM sensordata ORDER BY reading_time DESC LIMIT 1"
     connection.query(sql, function(err, result, fields) {
       if (err) throw err;
       res.json(result);
       console.log({data:result});
     });
   });
+  // router.get("/kwh", (req, res) => {
+  //   const sql = "SELECT KWH FROM sensordata ORDER BY reading_time DESC LIMIT 1"
+  //   connection.query(sql, function(err, result, fields) {
+  //     if (err) throw err;
+  //     res.json(result);
+  //     console.log({data:result});
+  //   });
+  // });
+  // router.get("/kvarh", (req, res) => {
+  //   const sql = "SELECT kVARh FROM sensordata ORDER BY reading_time DESC LIMIT 1"
+  //   connection.query(sql, function(err, result, fields) {
+  //     if (err) throw err;
+  //     res.json(result);
+  //     console.log({data:result});
+  //   });
+  // });
+  // router.get("/kvah", (req, res) => {
+  //   const sql = "SELECT kVAh FROM sensordata ORDER BY reading_time DESC LIMIT 1"
+  //   connection.query(sql, function(err, result, fields) {
+  //     if (err) throw err;
+  //     res.json(result);
+  //     console.log({data:result});
+  //   });
+  // });
 
   module.exports= router;
