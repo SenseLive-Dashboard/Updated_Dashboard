@@ -1,10 +1,9 @@
 <?php
-    ini_set("SMTP","ssl://smtp.gmail.com");
-    ini_set("smtp_port","25");
     include_once("database.php");
     $postdata = file_get_contents("php://input");
 
     if(isset($postdata) && !empty($postdata)) {
+       
         $request = json_decode($postdata);
         $CompanyName = trim($request->CompanyName);
         $Name = trim($request->Name);
@@ -16,7 +15,18 @@
         $Energy = $request->Energy;
         $Password = mysqli_real_escape_string($con, trim($request->Password));
         $ConfirmPassword = mysqli_real_escape_string($con, trim($request->ConfirmPassword));
-        
+        $OTP = trim($request->OTP);
+
+        $result = mysqli_query($con,"SELECT * FROM otp_expiry WHERE otp='" . $OTP . "' AND is_expired!=1 AND email='". $Email ."' AND NOW() <= DATE_ADD(create_at, INTERVAL 10 MINUTE)");
+	$count  = mysqli_num_rows($result);
+	if(!empty($count)) {
+		$result = mysqli_query($con,"UPDATE otp_expiry SET is_expired = 1 WHERE otp = '" . $OTP . "'");
+		$success = 2;	
+	} else {
+		$success =1;
+		
+	}
+        if($success==2){
         if($Password==$ConfirmPassword){
             $sql = "INSERT INTO temporycompanylogin(CompanyName, Name, Designation, Email, MobileNo, Address, ColdStorage, Energy, Password) VALUES ('$CompanyName', '$Name', '$Designation', '$Email', '$MobileNo', '$Address', '$ColdStorage', '$Energy', '$Password')";
 
@@ -32,6 +42,10 @@
                 echo('yaha error hai');
             }
         }
+    }
+    else{
+        http_response_code(404);
+    }
     }
         else{
             echo('waha error hai');

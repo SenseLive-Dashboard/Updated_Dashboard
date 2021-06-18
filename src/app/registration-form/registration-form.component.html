@@ -8,10 +8,14 @@
             <label for="CompanyName">Company name</label>
             <input type="text" class="form-control" id="CompanyName" formControlName="CompanyName" autocomplete="off"
               required>
+             
             <div class="error" *ngIf="registerForm.controls['CompanyName'].hasError('required')
                  && registerForm.controls['CompanyName'].touched">* Please enter company name</div>
+                  <div class="error" *ngIf="registerForm.controls['CompanyName'].hasError('uniqueCompanyname')">* Company Name Already Registered</div> 
           </div>
+          
 
+         
           <div class="form-group" class="form">
             <label for="Name">Company admin name</label>
             <input type="text" class="form-control" id="Name" formControlName="Name" required autocomplete="off">
@@ -30,8 +34,11 @@
             <input type="email" class="form-control" id="Email" formControlName="Email" autocomplete="off" required>
             <div class="error" *ngIf="registerForm.controls['Email'].hasError('required')
                     && registerForm.controls['Email'].touched">* Please enter email</div>
+            <div class="error" *ngIf="registerForm.controls['Email'].hasError('uniqueEmail')">Email Already Exists</div> 
+
 
           </div>
+        
 
           <div class="form-group" class="form">
             <label for="MobileNo">Contact number</label>
@@ -46,6 +53,7 @@
             <input type="text" class="form-control" id="Address" formControlName="Address" autocomplete="off" required>
             <div class="error" *ngIf="registerForm.controls['Address'].hasError('required')
               && registerForm.controls['Address'].touched">* Please enter address</div>
+
           </div>
           <div class="form">
             <legend class="col-form-label col-sm-6 pt-0">Choose Plan </legend>
@@ -71,19 +79,19 @@
               && registerForm.controls['ConfirmPassword'].touched">* Please enter confirm password</div>
               <div class="error" *ngIf="registerForm.errors?.passwordmatch && registerForm.controls['ConfirmPassword'].touched">* Password and confirm password must be match.</div>
           </div>
+          <button class="btn btn-primary" type="submit" (click)="sendOTP()" >
+              Send OTP</button>
+              <div *ngIf="show">
+          <div  class="form-group" class="form">
+            <label for="OTP">Enter OTP</label>
+            <input type="text" class="form-control" id="OTP" formControlName="OTP" autocomplete="off" required>
+          </div>
+          </div>
 
-          <!-- <div class="form-group" class="form">
-            <label for="ConfirmPassword">Confirm Password</label>
-            <input type="password" class="form-control" id="ConfirmPassword" formControlName="ConfirmPassword" required>
-            <div class="error" *ngIf="registerForm.controls['ConfirmPassword'].hasError('required')
-              && registerForm.controls['ConfirmPassword'].touched">* Please enter confirm password</div>
-              <div class="error" *ngIf="registerForm.controls['ConfirmPassword'].hasError('validator()')
-              && registerForm.controls['ConfirmPassword'].touched">* password doesn't match</div>
           
-            </div> -->
-
-          <div class="form-group">
-            <button class="btn btn-primary" type="submit" (click)="sendOTP()" (click)="registerCompany()"
+          
+            <div class="form-group">
+            <button class="btn btn-primary" type="submit" (click)="registerCompany()"
               [disabled]="registerForm.invalid">
               Submit</button>
             <div *ngIf="invalidRegistration" class="error">

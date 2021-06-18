@@ -4,25 +4,30 @@ include_once("database.php");
 
     if(isset($postdata) && !empty($postdata)) {
         $request = json_decode($postdata);
+        $company = trim($request->company);
         $meterName = trim($request->meterName);
-        $meterId = trim($request->meterId);
-        $section = trim($request->section);
-       
-        
-      
-        $sql = "INSERT INTO meterregistration(meterName, meterId, section) VALUES ('$meterName', '$meterId', '$section')";
-
-            if ($con->query($sql) === TRUE) {
+        $meterid = trim($request->meterid);
+        $location = trim($request->location);
+        $sql = "INSERT INTO meterregistration (meterName, meterid,company,location)
+        SELECT '$meterName', '$meterid', '$company', '$location'
+        WHERE NOT EXISTS 
+            (SELECT meterid 
+             FROM meterregistration 
+             WHERE meterid = '$meterid')";
+             mysqli_query($con,$sql);
+         if (mysqli_affected_rows($con)) {
                 $authdata = [
+                    'company' => $company,
                     'meterName' => $meterName,
-                    'meterId' => $meterId,
-                    'section' => $section,
+                    'meterid' => $meterid,
+                    'location' => $location,
                     'id' => mysqli_insert_id($con)
                     ];
                 echo json_encode($authdata);
-            } else {
+            } 
+            else {
                 
-                http_response_code(404);
+                echo json_encode($authdata);
             }
         }
 

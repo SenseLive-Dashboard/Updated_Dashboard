@@ -7,9 +7,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Sensor } from '../sensorData';
 import { Parameter } from '../parameter';
 import { DialogboxService } from '../dialogbox.service';
+import { SharedService } from '../shared.service';
 
 declare const CanvasJS: any;
-
 
 function currentGraph() {
 
@@ -23,8 +23,6 @@ function currentGraph() {
       theme: "light2",
       width: 450,
       height: 200,
-
-
       axisY: {
         title: "Current",
         titleFontSize: 10,
@@ -39,7 +37,6 @@ function currentGraph() {
           } else {
             e.dataSeries.visible = true;
           }
-
           e.chart.render();
         }
       },
@@ -76,29 +73,27 @@ function currentGraph() {
     function addData(data: string | any[]) {
       for (var i = 0; i < data.length; i++) {
         dataPoints.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].val
+          x: new Date(data[i].reading_time),
+          y: data[i].Current_Avg
         });
         dataPoints1.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase1
+          x: new Date(data[i].reading_time),
+          y: data[i].Current_A
         });
         dataPoints2.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase2
+          x: new Date(data[i].reading_time),
+          y: data[i].Current_B
         });
         dataPoints3.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase3
+          x: new Date(data[i].reading_time),
+          y: data[i].Current_C
         });
 
       }
       chart.render();
     }
-
     // $.getJSON("http://mayurdafare.ml/APIs/graph.php", addData);
-    $.getJSON("http://localhost:3080/graph/current_graph", addData);
-
+    $.getJSON("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/currentGraph.php", addData);
   })
 }
 
@@ -114,8 +109,6 @@ function voltageGraph() {
       theme: "light2",
       width: 450,
       height: 200,
-
-
       axisY: {
         title: "Voltage",
         titleFontSize: 10,
@@ -130,7 +123,6 @@ function voltageGraph() {
           } else {
             e.dataSeries.visible = true;
           }
-
           e.chart.render();
         }
       },
@@ -167,43 +159,38 @@ function voltageGraph() {
     function addData(data: string | any[]) {
       for (var i = 0; i < data.length; i++) {
         dataPoints.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].val
+          x: new Date(data[i].reading_time),
+          y: data[i].Voltage_Avg
         });
         dataPoints1.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase1
+          x: new Date(data[i].reading_time),
+          y: data[i].Voltage_AN
         });
         dataPoints2.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase2
+          x: new Date(data[i].reading_time),
+          y: data[i].Voltage_BN
         });
         dataPoints3.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase3
+          x: new Date(data[i].reading_time),
+          y: data[i].Voltage_CN
         });
 
       }
       chart.render();
     }
-
-    $.getJSON("http://localhost:3080/graph/voltage_graph", addData);
+    $.getJSON("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/voltageGraph.php", addData);
   })
 }
 function powerGraph() {
 
   $(document).ready(function () {
-    var dataPoints: { x: Date; y: any; }[] = [];
-    var dataPoints1: { x: Date; y: any; }[] = [];
-    var dataPoints2: { x: Date; y: any; }[] = [];
-    var dataPoints3: { x: Date; y: any; }[] = [];
+    var dataPoints: { x: Date; y: any; }[]=[];
+   
     var chart = new CanvasJS.Chart("chartContainer2", {
       animationEnabled: true,
       theme: "light2",
       width: 450,
       height: 200,
-
-
       axisY: {
         title: "Power Factor",
         titleFontSize: 10,
@@ -218,7 +205,6 @@ function powerGraph() {
           } else {
             e.dataSeries.visible = true;
           }
-
           e.chart.render();
         }
       },
@@ -228,70 +214,30 @@ function powerGraph() {
         legendText: "Average",
         yValueFormatString: " ##.00 Units",
         dataPoints: dataPoints
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 1",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints1
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 2",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints2
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 3",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints3
       }]
-
     });
     function addData(data: string | any[]) {
       for (var i = 0; i < data.length; i++) {
         dataPoints.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].val
+          x: new Date(data[i].reading_time),
+          y: data[i].Power_Factor
         });
-        dataPoints1.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase1
-        });
-        dataPoints2.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase2
-        });
-        dataPoints3.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase3
-        });
-
-      }
+        }
       chart.render();
     }
-
-    $.getJSON("http://localhost:3080/graph/power_graph", addData);
+    $.getJSON("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/powerFactorGraph.php", addData);
   })
 }
 function activePowerGraph() {
 
   $(document).ready(function () {
     var dataPoints: { x: Date; y: any; }[] = [];
-    var dataPoints1: { x: Date; y: any; }[] = [];
-    var dataPoints2: { x: Date; y: any; }[] = [];
-    var dataPoints3: { x: Date; y: any; }[] = [];
+   
     var chart = new CanvasJS.Chart("chartContainer3", {
       animationEnabled: true,
       theme: "light2",
       width: 450,
       height: 200,
-
-
       axisY: {
         title: "Active Power",
         titleFontSize: 10,
@@ -306,7 +252,6 @@ function activePowerGraph() {
           } else {
             e.dataSeries.visible = true;
           }
-
           e.chart.render();
         }
       },
@@ -316,54 +261,18 @@ function activePowerGraph() {
         legendText: "Average",
         yValueFormatString: " ##.00 Units",
         dataPoints: dataPoints
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 1",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints1
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 2",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints2
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 3",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints3
       }]
-
     });
     function addData(data: string | any[]) {
       for (var i = 0; i < data.length; i++) {
         dataPoints.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].val
+          x: new Date(data[i].reading_time),
+          y: data[i].Active_Power
         });
-        dataPoints1.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase1
-        });
-        dataPoints2.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase2
-        });
-        dataPoints3.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase3
-        });
-
       }
       chart.render();
     }
-
-    $.getJSON("http://localhost:3080/graph/active_power_graph", addData);
+    $.getJSON("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/activePowerGraph.php", addData);
   })
 }
 
@@ -371,15 +280,12 @@ function reactivePowerGraph() {
 
   $(document).ready(function () {
     var dataPoints: { x: Date; y: any; }[] = [];
-    var dataPoints1: { x: Date; y: any; }[] = [];
-    var dataPoints2: { x: Date; y: any; }[] = [];
-    var dataPoints3: { x: Date; y: any; }[] = [];
+    
     var chart = new CanvasJS.Chart("chartContainer4", {
       animationEnabled: true,
       theme: "light2",
       width: 450,
       height: 200,
-
       axisY: {
         title: "Reactive Power",
         titleFontSize: 10,
@@ -394,7 +300,6 @@ function reactivePowerGraph() {
           } else {
             e.dataSeries.visible = true;
           }
-
           e.chart.render();
         }
       },
@@ -404,54 +309,18 @@ function reactivePowerGraph() {
         legendText: "Average",
         yValueFormatString: " ##.00 Units",
         dataPoints: dataPoints
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 1",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints1
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 2",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints2
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 3",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints3
       }]
-
     });
     function addData(data: string | any[]) {
       for (var i = 0; i < data.length; i++) {
         dataPoints.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].val
+          x: new Date(data[i].reading_time),
+          y: data[i].Reactive_Power
         });
-        dataPoints1.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase1
-        });
-        dataPoints2.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase2
-        });
-        dataPoints3.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase3
-        });
-
       }
       chart.render();
     }
-
-    $.getJSON("http://localhost:3080/graph/reactive_power_graph", addData);
+    $.getJSON("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/reactivePowerGraph.php", addData);
   })
 }
 
@@ -459,15 +328,12 @@ function apparentPowerGraph() {
 
   $(document).ready(function () {
     var dataPoints: { x: Date; y: any; }[] = [];
-    var dataPoints1: { x: Date; y: any; }[] = [];
-    var dataPoints2: { x: Date; y: any; }[] = [];
-    var dataPoints3: { x: Date; y: any; }[] = [];
+   
     var chart = new CanvasJS.Chart("chartContainer5", {
       animationEnabled: true,
       theme: "light2",
       width: 450,
       height: 200,
-
       axisY: {
         title: "Apparent Power",
         titleFontSize: 10,
@@ -482,7 +348,6 @@ function apparentPowerGraph() {
           } else {
             e.dataSeries.visible = true;
           }
-
           e.chart.render();
         }
       },
@@ -492,54 +357,67 @@ function apparentPowerGraph() {
         legendText: "Average",
         yValueFormatString: " ##.00 Units",
         dataPoints: dataPoints
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 1",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints1
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 2",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints2
-      },
-      {
-        type: "spline",
-        showInLegend: true,
-        legendText: "Phase 3",
-        yValueFormatString: " ##.00 Units",
-        dataPoints: dataPoints3
       }]
 
     });
     function addData(data: string | any[]) {
       for (var i = 0; i < data.length; i++) {
         dataPoints.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].val
+          x: new Date(data[i].reading_time),
+          y: data[i].Apparent_Power
         });
-        dataPoints1.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase1
-        });
-        dataPoints2.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase2
-        });
-        dataPoints3.push({
-          x: new Date(data[i].time_stamp),
-          y: data[i].phase3
-        });
-
       }
       chart.render();
     }
+    $.getJSON("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/apparentPowerGraph.php", addData);
+  })
+}
 
-    $.getJSON("http://localhost:3080/graph/apparent_power_graph", addData);
+function frequencyGraph() {
+
+  $(document).ready(function () {
+    var dataPoints: { x: Date; y: any; }[] = [];
+   
+    var chart = new CanvasJS.Chart("chartContainer6", {
+      animationEnabled: true,
+      theme: "light2",
+      width: 450,
+      height: 200,
+      axisY: {
+        title: "Frequency",
+        titleFontSize: 10,
+        includeZero: true
+      },
+      legend: {
+        cursor: "pointer",
+        itemclick: function (e: { dataSeries: { visible: boolean; }; chart: { render: () => void; }; }) {
+
+          if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+            e.dataSeries.visible = false;
+          } else {
+            e.dataSeries.visible = true;
+          }
+          e.chart.render();
+        }
+      },
+      data: [{
+        type: "spline",
+        showInLegend: true,
+        legendText: "Average",
+        yValueFormatString: " ##.00 Units",
+        dataPoints: dataPoints
+      }]
+    });
+    function addData(data: string | any[]) {
+      for (var i = 0; i < data.length; i++) {
+        dataPoints.push({
+          x: new Date(data[i].reading_time),
+          y: data[i].Frequency
+        });
+      }
+      chart.render();
+    }
+    $.getJSON("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/frequencyGraph.php", addData);
   })
 }
 
@@ -551,148 +429,42 @@ function apparentPowerGraph() {
 export class OverviewComponent implements OnInit {
   [x: string]: any;
   showModal: boolean|any;
-  addCardForm: FormGroup|any;
   submitted = false;
-  faTimes = faTimes;
-  // data: Emp[] = [];
-  // data1: Emp[] = [];
-  // data2: Emp[] = [];
-  // data3: Emp[] = [];
-  // data4: Emp[] = [];
-  // data5: Emp[] = [];
   data: Sensor[] = [];
-  data1: Sensor[] = [];
   data2: Sensor[] = [];
-  data3: Sensor[] = [];
-  data4: Sensor[] = [];
-  data5: Sensor[] = [];
-  kwh: Sensor[] = [];
-  kvarh: Sensor[] = [];
-  kvah: Sensor[] = [];
-  //Parameter: Emp[] = [];
-  
-  cardData: Parameter[]=[];
-  
- 
- 
+  value:any;
   faChartLine = faChartLine;
-  faPlusCircle = faPlusCircle;
-  show()
-  {
-   
-    this.showModal = true; // Show-Hide Modal Check
-    
-  }
-  //Bootstrap Modal Close event
-  hide()
-  {
-    
-    this.showModal = false;
-    this.addCardForm.reset();
-    
 
-  }
+  constructor(private formBuilder: FormBuilder,private cardService: CardService,private shared: SharedService,private dialogboxService:DialogboxService) {
+    this.value=JSON.parse(window.sessionStorage.getItem('userdata')||'{}');
 
-  constructor(private formBuilder: FormBuilder,private cardService: CardService, private dialogboxService:DialogboxService) {
-    this.cardService.get_current_data().subscribe((response) => {
+    this.cardService.get_meterCardData(this.value).subscribe((response) => {
 
       this.data = response;
+      console.log("Card Data:",this.data);
       return this.data;
     });
-    this.cardService.get_voltage_data().subscribe((response) => {
-      this.data1 = response;
-      return this.data1;
-    });
-    this.cardService.get_powerfactor_data().subscribe((response) => {
-      this.data2 = response;
-      return this.data2;
-    });
-    this.cardService.get_activepower_data().subscribe((response) => {
-      this.data3 = response;
-      return this.data3;
-    });
-    this.cardService.get_reactivepower_data().subscribe((response) => {
-      this.data4 = response;
-      return this.data4;
-    });
-    this.cardService.get_apparentpower_data().subscribe((response) => {
-      this.data5 = response;
-      return this.data5;
-    });
-    this.cardService.get_kwh_data().subscribe((response) => {
-      this.kwh = response;
-      return this.kwh;
-    });
-    this.cardService.get_kvarh_data().subscribe((response) => {
-      this.kvarh = response;
-      return this.kvarh;
-    });
-    this.cardService.get_kvah_data().subscribe((response) => {
-      this.kvah = response;
-      return this.kvah;
-    });
-
-   
   }
   ngOnInit(): void {
-    this.addCardForm = this.formBuilder.group({
-     data_type:['',Validators.required],
-      unit: ['', Validators.required]
-  });
-  this.cardService.add_card().subscribe((result)=>{
-  this.cardData=result;
-    console.log("Meter Card Data:",this.cardData);
-    return this.cardData;
-  },
-    (error) => {console.log(error)
-  });
+    
+    // if (this.shared.subsVar==undefined) {    
+    //   this.shared.subsVar = this.shared.invoketableFunction.subscribe((meterid:string) => {    
+    //     this.myFunctionOne(meterid);   
+    //   });    
+    // } 
   
-
   }
-  get f() { return this.addCardForm.controls; }
- 
-onSubmit() {
-  this.submitted = true;
+  // myFunctionOne(meterid:string){
+  //   this.m_id=meterid;
+  //   console.log(this.m_id);
 
-   // stop here if form is invalid
-   if (this.addCardForm.invalid) {
-    return;
-}
-if(this.submitted){
+  //   this.cardService.get_meterCardData(this.m_id).subscribe((response)=>{
+      
+  //     this.data=response;
+  //     return this.data;
+  //   });
+  // }
 
-   //console.log(this.addCardForm.value.data_type);
-  this.cardService.add_parameter(this.addCardForm.value).subscribe((parameterdata: Parameter)=>{
-  
-    console.log(parameterdata);
-    
-
-  },
-    (error) => {console.log(error)
-  });
-  this.showModal=false;
-  this.cardService.update_parameter(this.addCardForm.value).subscribe((result:Parameter)=>{
-    
-    console.log(result);
-    this.ngOnInit();
-  });
-}
-this.ngOnInit();
-  this.addCardForm.reset();
-  this.submitted=false;
-}
-deleteCard(id:number) {
-  
-  this.dialogboxService.confirmThis("Are you sure to delete?",  () => {  
-    this.cardService.deleteCard(id).subscribe((cardDetails: Parameter)=>{
-      console.log("Card Deleted ", cardDetails);
-      this.ngOnInit();
-    }); 
-  }, function () {  
-    console.log("Cancel Card Deletion") 
-  })  
-}  
-
- 
   graph_c() {
     currentGraph();
   }
@@ -711,6 +483,7 @@ deleteCard(id:number) {
   graph_app() {
     apparentPowerGraph();
   }
-
-
+  graph_frequency() {
+    frequencyGraph();
+  }
 }

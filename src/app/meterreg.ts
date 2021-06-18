@@ -1,7 +1,8 @@
 export interface Meter {
     id: number,
+    company: string,
     meterName: string,
-    meterId: string,
-    section: string
+    meterid: string,
+    location: string
     
 }

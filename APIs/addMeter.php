@@ -1,7 +1,8 @@
 <?php
 require 'database.php';
 
-$sql = "SELECT * FROM meterregistration";
+$value = $_GET['value'];
+$sql = "SELECT * FROM meterregistration WHERE company = '{$value}' ";
 $myArray = array();
 
 if($result = mysqli_query($con,$sql))

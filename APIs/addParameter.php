@@ -6,12 +6,8 @@
         $request = json_decode($postdata);
         $data_type = trim($request->data_type);
         $unit = trim($request->unit);
-        
-        
-        
             $sql = "INSERT INTO parameterData(data_type, unit) VALUES ('$data_type', '$unit')";
-           
-            if ($con->query($sql) === TRUE) {
+                       if ($con->query($sql) === TRUE) {
                 $authdata = [
                     'data_type' => $data_type,
                     'unit' => $unit,
@@ -20,11 +16,11 @@
                 echo json_encode($authdata);
             } else {
                 
-                echo('yaha error hai');
+                echo('Error');
             }
         
     }
-        else{
-            echo('waha error hai');
-        }
+    else{
+        echo('Error');
+    }
 ?>

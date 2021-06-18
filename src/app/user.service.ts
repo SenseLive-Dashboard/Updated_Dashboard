@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Emp } from './table';
 import * as common from './baseurl'
+import { Sensor } from './sensorData';
 
 @Injectable({
   providedIn: 'root'
@@ -18,58 +18,53 @@ export class UserService {
   // baseUrl8: string = "http://mayurdafare.ml/APIs/meterndrpdwn.php";
   // baseUrl9: string = "http://mayurdafare.ml/APIs/datatypedrpdwn.php";
 
- 
-
   constructor(private httpClient: HttpClient) { }
-  get_tableData() {
-    // return this.httpClient.get<Emp[]>(common.baseURL + "/table.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table/table_data');
+  // get_tableData() {
+  //   // return this.httpClient.get<Emp[]>(common.baseURL + "/table.php");
+  //   return this.httpClient.get<Sensor[]>(common.endpoint1+'/table.php');
+  // }
+  sendidMeter(m_id: string){
+    console.log(m_id);
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/table.php?m_id='+m_id);
+  }
+  insertdata(m_id: string){
+    console.log(m_id);
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/InsertDatafirs.php?m_id='+m_id);
+  }
+
+  displayAllMeterData(companyName:string){
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/meterDataTable.php?companyName='+companyName);
+  }
+  delTableRecord(m_id:string){
+    return this.httpClient.delete<Sensor>("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/deleteSensorDataRecord.php/?m_id="+m_id);
 
   }
-  get_liveData() {
+  get_liveData(m_id: string) {
     // return this.httpClient.get<Emp[]>(common.baseURL + "/tslive.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_sort/live');
-
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/tslive.php?m_id='+m_id);
   }
-  get_minuteData() {
+  get_minuteData(m_id: string) {
     // return this.httpClient.get<Emp[]>(common.baseURL + "/tsminute.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_sort/minute');
-
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/tsminute.php?m_id='+m_id);
   }
-  get_hourData() {
+  get_hourData(m_id: string) {
     // return this.httpClient.get<Emp[]>(common.baseURL + "/tshour.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_sort/hour');
-
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/tshour.php?m_id='+m_id);
   }
-  get_dayData() {
+  get_dayData(m_id: string) {
     // return this.httpClient.get<Emp[]>(common.baseURL + "/tsday.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_sort/day');
-
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/tsday.php?m_id='+m_id);
   }
-  get_weekData() {
+  get_weekData(m_id: string) {
     // return this.httpClient.get<Emp[]>(common.baseURL + "/tsweek.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_sort/week');
-
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/tsweek.php?m_id='+m_id);
   }
-  get_monthData() {
+  get_monthData(m_id: string) {
     // return this.httpClient.get<Emp[]>(common.baseURL + "/tsmonth.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_sort/month');
-
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/tsmonth.php?m_id='+m_id);
   }
   get_companyDrpdwn_data() {
     // return this.httpClient.get<Emp[]>(common.baseURL + "/compdrpdwn.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_filter/company');
-
+    return this.httpClient.get<Sensor[]>(common.endpoint1+'/compdrpdwn.php');
   }
-  get_meterDrpdwn_data() {
-    // return this.httpClient.get<Emp[]>(common.baseURL + "/meterndrpdwn.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_filter/meter_name');
-
-  }
-  get_datatypeDrpdwn_data() {
-    // return this.httpClient.get<Emp[]>(common.baseURL + "/datatypedrpdwn.php");
-    return this.httpClient.get<Emp[]>(common.endpoint+'/table_filter/data_type');
-
-  }
- 
 }

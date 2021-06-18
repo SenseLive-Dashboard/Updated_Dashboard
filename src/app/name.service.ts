@@ -1,53 +1,48 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Company } from './company';
 import * as common from './baseurl'
-import { catchError } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { HandleError, HttpErrorHandlerService } from './http-error-handler.service';
+import { map, tap } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
 export class NameService {
-  private apiUrl = `${environment.apiUrl}/company_registration`;
-  private handleError: HandleError;
+  constructor(private httpClient: HttpClient) {  }
+  getCompanyData(){
+    return this.httpClient.get<Company[]>("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/companyRegData.php").pipe(
+      map( Company => {
+        const newCompany = [];
+        for(let company of Company){
+          const CompanyName = company.CompanyName;
+          const Email = company.Email;
+          newCompany.push({CompanyName: CompanyName, Email: Email});
+        }
+        return newCompany;
+      }),
+      tap(Company => console.log(Company))
+    );
+  }
+  getDataByCompanyname(CompanyName:string){
+    return this.httpClient.get<Company[]>("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/uniqueCompanyName.php?CompanyName="+CompanyName);
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
-  
-
-  constructor(private httpClient: HttpClient, private httpErrorHandler: HttpErrorHandlerService ) { 
-    this.handleError = this.httpErrorHandler.createHandleError('NameService')
+  }
+  getDataByEmail(Email:string){
+    return this.httpClient.get<Company[]>("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/uniqueEmail.php?Email="+Email);
 
   }
 
   registerCompany(company: Company): Observable<Company> {
-    //return this.httpClient.post<Company>(common.baseURL + '/company_register.php', company);
-     return this.httpClient.post<Company>(`${this.apiUrl}/register`,company,this.httpOptions)
-     .pipe(
-      catchError<Company, Observable<any>>(this.handleError('register', null))
-    );
-    
-
+    return this.httpClient.post<Company>(common.endpoint1 + '/company_register.php', company);
   }
-  sendOTP(Email: Company): Observable<Company> {
-    return this.httpClient.post<Company>(common.baseURL + '/sendOTP.php', Email);
+  sendOTP(Email:string){
+    return this.httpClient.get<any[]>("http://localhost/SenseLive-Dashboard-Development-kiran-overview/APIs/sendOTP.php?Email="+Email);
   }
   resetpassword(set: Company): Observable<Company> {
     return this.httpClient.post<Company>(common.baseURL + '/resetpassword.php', set);
   }
   changePassword(email: any) {
     return this.httpClient.post(common.baseURL + '/forgotpassword.php', email);
-    // return this.httpClient.post<Company>(`${this.apiUrl}/forgot-password`,req,this.httpOptions)
-    //  .pipe(
-    //   catchError<Company, Observable<any>>(this.handleError('forgot-password', null))
-    // );
   }
-
-
-
 }

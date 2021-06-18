@@ -1,7 +1,7 @@
 export interface Sensor {
     id: number,
     reading_time:string,
-    Device:string,
+    Device_Id:string,
     Client:string,
     Voltage_AN:string,
     Voltage_BN:string,

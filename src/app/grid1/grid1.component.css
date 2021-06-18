@@ -6,6 +6,10 @@
     color: white;
     
 }
+.error{
+    color: #f44336;
+    font-size: 14px;
+  }
 #amb{
     margin:5px auto;
     padding: 10px;

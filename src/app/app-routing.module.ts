@@ -9,6 +9,7 @@ import { OtpComponent } from './otp/otp.component';
 import { ParentComponent } from './parent/parent.component';
 import { OverviewComponent } from './overview/overview.component';
 import { DataComponent } from './data/data.component';
+import { AuthGuard } from './auth.guard';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'register', component: RegistrationFormComponent },
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: 'otp', component: OtpComponent },
  
   {
-    path: 'dashboard', component: ParentComponent,
+    path: 'dashboard', component: ParentComponent, canActivate:[AuthGuard],
     children: [
       { path: 'overview', component: OverviewComponent },
       { path: 'data', component: DataComponent }

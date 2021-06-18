@@ -15,15 +15,12 @@ export class AppComponent {
     if (this.apiService.isLoggedIn()) {
       console.log("loggedin");
       this.loginbtn = false;
-
     }
     else {
       this.loginbtn = true;
-
     }
   }
   private changeName(name: boolean): void {
-
     this.loginbtn = !name;
   }
 

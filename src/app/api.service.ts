@@ -11,7 +11,7 @@ export class ApiService {
   @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
   constructor(private httpClient: HttpClient) { }
   userlogin(loginData: any) {
-    return this.httpClient.post<any>(common.baseURL + '/login.php', loginData)
+    return this.httpClient.post<any>(common.endpoint1 + '/login.php', loginData)
       .pipe(map(Company => {
         this.setToken(Company[0].name);
         this.getLoggedInName.emit(true);

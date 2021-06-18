@@ -24,87 +24,155 @@
       Column Filter <span class="caret"></span>
     </button>
     <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide()" /> Value</a>
-      </li><br>
-      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide1()" /> Phase1</a>
-      </li><br>
-      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide2()" /> Phase2</a>
-      </li><br>
-      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide3()" /> Phase3</a>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideVA()" checked/> Voltage
+        Phase1</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideVB()" checked/> Voltage
+        Phase2</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideVC()" checked/> Voltage
+        Phase3</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide()" checked/> Voltage
+          Avg</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide1()" checked/> Frequency</a>
+      </li >
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideCA()" checked/> Current
+        Phase1</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideCB()" checked/> Current
+        Phase2</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideCC()" checked/> Current
+        Phase3</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide2()" checked/> Current
+          Avg</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideActive()" checked/> Active
+          Power</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideReactive()" checked/> Reactive
+        Power</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhideApparent()" checked/> Apparent
+        Power</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhidePower()" checked/> Power
+        Factor</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide4()" checked/> KWH</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide5()" checked/> KVARH</a>
+      </li>
+      <li role="menuitem"><a class="dropdown-item" href="#"><input type="checkbox" (click)="showhide6()" checked/> KVAH</a>
       </li>
     </ul>
   </div>
 </div>
 
-
-
-
 <input *ngIf="datepicker" type="text" placeholder="SELECT DATE" class="form-control" id="daterange" bsDaterangepicker
-  (ngModelChange)="getByDate($event)" [(ngModel)]="this.filters.time_stamp">
+  (ngModelChange)="getByDate($event)" [(ngModel)]="this.filters.reading_time">
 <!--button for download-->
 <button class="btn btn-secondary float-right" (click)="exportexcel()">
   <fa-icon [icon]="faDownload"></fa-icon>
 </button>
+<br>
 
-<div class="table-responsive">
+<div class="table-container">
   <table class="table" id="excel-table">
     <tr>
-      <th scope="col">Time Stamp</th>
-      <th scope="col">Company &nbsp;
+      <th scope="col">Reading Time</th>
+      <th scope="col">Device Id
+      </th>
+     
+      <th scope="col">Client &nbsp;
         <fa-icon [icon]="faFilter" (click)="show1=!show1"></fa-icon>
-        <fa-icon [icon]="faSort" (click)="sort1('company')"></fa-icon>
-        <input *ngIf="show1" class="form-control" type="text" name="company" [(ngModel)]="company"
+        <fa-icon [icon]="faSort" (click)="sortClient('Client')"></fa-icon>
+        <input *ngIf="show1" class="form-control" type="text" name="Client" [(ngModel)]="Client"
           (ngModelChange)="Search1()" list="c1">
         <datalist id="c1">
-          <option *ngFor="let mydata of data1" [value]="mydata.company">
+          <option *ngFor="let mydata of data1" [value]="mydata.Client">
 
         </datalist>
       </th>
-      <th scope="col">Meter Name &nbsp;
-        <fa-icon [icon]="faFilter" (click)="show2=!show2"></fa-icon>
-        <fa-icon [icon]="faSort" (click)="sort2('meter_name')"></fa-icon>
-        <input *ngIf="show2" class="form-control" type="text" name="meter_name" [(ngModel)]="meter_name"
-          (ngModelChange)="Search2()" list="c2">
-        <datalist id="c2">
-          <option *ngFor="let mydata of data2" [value]="mydata.meter_name">
-        </datalist>
+     
+      <th *ngIf="!checkVA" scope="col">Voltage Phase1 &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortVoltage_A('Voltage_AN')"></fa-icon>
       </th>
-      <th scope="col">Meter Id &nbsp;
-        <fa-icon [icon]="faSort" (click)="sort3('meter_id')"></fa-icon>
+      <th *ngIf="!checkVB" scope="col">Voltage Phase2 &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortVoltage_B('Voltage_BN')"></fa-icon>
       </th>
-      <th scope="col">Data Type &nbsp;
-        <fa-icon [icon]="faFilter" (click)="show3=!show3"></fa-icon>
-        <fa-icon [icon]="faSort" (click)="sort4('data_type')"></fa-icon>
-        <input *ngIf="show3" class="form-control" type="text" name="data_type" [(ngModel)]="data_type"
-          (ngModelChange)="Search3()" list="c3">
-        <datalist id="c3">
-          <option *ngFor="let mydata of data3" [value]="mydata.data_type">
-        </datalist>
+      <th *ngIf="!checkVC" scope="col">Voltage Phase3 &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortVoltage_C('Voltage_CN')"></fa-icon>
       </th>
-      <th *ngIf="check" scope="col">Value</th>
-      <th *ngIf="check1" scope="col">Phase 1</th>
-      <th *ngIf="check2" scope="col">Phase 2</th>
-      <th *ngIf="check3" scope="col">Phase 3</th>
+      <th *ngIf="!check" scope="col">Voltage Avg &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortVoltage_Avg('Voltage_Avg')"></fa-icon>
+      </th>
+      <th *ngIf="!check1" scope="col">Frequency &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortFrequency('Frequency')"></fa-icon>
+      </th>
+      <th *ngIf="!checkCA" scope="col">Current Phase1 &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortCurrent_A('Current_A')"></fa-icon>
+      </th>
+      <th *ngIf="!checkCB" scope="col">Current Phase2 &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortCurrent_B('Current_B')"></fa-icon>
+      </th>
+      <th *ngIf="!checkCC" scope="col">Current Phase3 &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortCurrent_C('Current_C')"></fa-icon>
+      </th>
+      <th *ngIf="!check2" scope="col">Current Avg &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortCurrent_Avg('Current_Avg')"></fa-icon>
+      </th>
+      <th *ngIf="!checkActive" scope="col">Active Power &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortActivePower('Active_Power')"></fa-icon>
+      </th>
+      <th *ngIf="!checkReactive" scope="col">Reactive Power &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortReactivePower('Reactive_Power')"></fa-icon>
+      </th>
+      <th *ngIf="!checkApparent" scope="col">Apparent Power &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortApparentPower('Apparent_Power')"></fa-icon>
+      </th>
+      <th *ngIf="!checkPower" scope="col">Power Factor &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortPowerFactor('Power_Factor')"></fa-icon>
+      </th>
+      <th *ngIf="!check4" scope="col">KWH &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortKWH('KWH')"></fa-icon>
+      </th>
+      <th *ngIf="!check5" scope="col">KVARH &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortkVARh('kVARh')"></fa-icon>
+      </th>
+      <th *ngIf="!check6" scope="col">KVAH &nbsp;
+        <fa-icon [icon]="faSort" (click)="sortkVAh('kVAh')"></fa-icon>
+      </th>
     </tr>
     <tbody>
       <!--search sort and pagination html-->
       <tr *ngFor="let mydata of data | orderBy:key:reverse | paginate: {itemsPerPage:20,currentPage:p};">
-        <td width="20%">{{mydata.time_stamp}}</td>
-        <td width="20%">{{mydata.company}}</td>
-        <td width="18%">{{mydata.meter_name}}</td>
-        <td width="12%">{{mydata.meter_id}}</td>
-        <td width="15%">{{mydata.data_type}}</td>
-        <td *ngIf="check" width="10%">{{mydata.val}}</td>
-        <td *ngIf="check1" width="10%">{{mydata.phase1}}</td>
-        <td *ngIf="check2" width="10%">{{mydata.phase2}}</td>
-        <td *ngIf="check3" width="10%">{{mydata.phase3}}</td>
+        <td>{{mydata.reading_time}}</td>
+        <td>{{mydata.Device_Id}}</td>
+        <td>{{mydata.Client}}</td>
+        <td *ngIf="!checkVA">{{mydata.Voltage_AN}}</td>
+        <td *ngIf="!checkVB">{{mydata.Voltage_BN}}</td>
+        <td *ngIf="!checkVC">{{mydata.Voltage_CN}}</td>
+        <td *ngIf="!check">{{mydata.Voltage_Avg}}</td>
+        <td *ngIf="!check1">{{mydata.Frequency}}</td>
+        <td *ngIf="!checkCA">{{mydata.Current_A}}</td>
+        <td *ngIf="!checkCB">{{mydata.Current_B}}</td>
+        <td *ngIf="!checkCC">{{mydata.Current_C}}</td>
+        <td *ngIf="!check2">{{mydata.Current_Avg}}</td>
+        <td *ngIf="!checkActive">{{mydata.Active_Power}}</td>
+        <td *ngIf="!checkReactive">{{mydata.Reactive_Power}}</td>
+        <td *ngIf="!checkApparent">{{mydata.Apparent_Power}}</td>
+        <td *ngIf="!checkPower">{{mydata.Power_Factor}}</td>
+        <td *ngIf="!check4">{{mydata.KWH}}</td>
+        <td *ngIf="!check5">{{mydata.kVARh}}</td>
+        <td *ngIf="!check6">{{mydata.kVAh}}</td>
       </tr>
     </tbody>
     <!--pagination code-->
 
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </table>
-
-
-
 </div>
